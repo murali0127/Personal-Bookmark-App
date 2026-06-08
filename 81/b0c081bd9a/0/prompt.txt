@@ -1,0 +1,9 @@
+create a api folder, which gets user profile and details , w.r.t my codebase.
+
+---
+
+create a Golbal Error Handler for my application using  a Toast Notification.
+
+---
+
+fix the errorBoundary Error
