@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Personal Bookmark App
 
 A simple app to save and manage your personal bookmark URLs — public or private.
@@ -16,7 +15,3 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-=======
-# Personal-Bookmark-App
-A Personal Bookmerk application
->>>>>>> f747ee946de775fe0152f531673fff32b00aca13
