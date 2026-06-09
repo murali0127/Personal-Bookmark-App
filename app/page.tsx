@@ -57,7 +57,7 @@ export default function LandingPage() {
           backgroundImage: `radial-gradient(circle, ${accentColor}12 0%, rgba(0,0,0,0) 70%)`,
         }}
       />
-      {/* <FloatingBackground accentColor={accentColor}> */}
+      <FloatingBackground accentColor={accentColor} />
 
       <main className="flex-1 w-full pt-24 pb-20 px-4 md:px-10 max-w-6xl mx-auto flex flex-col gap-24 relative z-10">
 
@@ -84,7 +84,6 @@ export default function LandingPage() {
         </section>
 
       </main>
-      {/* </FloatingBackground> */}
       <footer className="w-full shrink-0 border-t border-white/5 bg-[#09090B] py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2.5">
