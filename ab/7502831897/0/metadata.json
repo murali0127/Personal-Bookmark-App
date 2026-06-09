@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.7.6-nightly.202606070732.ab2c6169",
+  "checkpoint_id": "ab7502831897",
+  "session_id": "8f601ae6-9596-42c9-bd17-0f3646ab13e1",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-09T17:46:02.1378345Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "components/HeroSection.tsx",
+    "context/AuthContext.tsx",
+    "context/BookmarkContext.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "gemma4:31b-cloud",
+  "turn_id": "96e0b6cc7294",
+  "token_usage": {
+    "input_tokens": 157177,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 35174,
+    "api_call_count": 5
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-09T17:46:02.1116311Z",
+    "agent_lines": 58,
+    "agent_removed": 144,
+    "human_added": 267,
+    "human_modified": 749,
+    "human_removed": 0,
+    "total_committed": 1074,
+    "total_lines_changed": 1218,
+    "agent_percentage": 16.58456486042693,
+    "metric_version": 2
+  }
+}

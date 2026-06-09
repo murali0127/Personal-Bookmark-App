@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.6-nightly.202606070732.ab2c6169",
+  "checkpoint_id": "ab7502831897",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "components/HeroSection.tsx",
+    "context/AuthContext.tsx",
+    "context/BookmarkContext.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ab/7502831897/0/metadata.json",
+      "transcript": "/ab/7502831897/0/full.jsonl",
+      "content_hash": "/ab/7502831897/0/content_hash.txt",
+      "prompt": "/ab/7502831897/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 157177,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 35174,
+    "api_call_count": 5
+  }
+}
