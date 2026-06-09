@@ -49,18 +49,31 @@ export type Database = {
                               created_at: string
                               user_name: string | null
                               handle: string | null
+                              role: string | null
+                              avatar_url: string | null
+                              followers: number | null
+                              auth_user_id: string
                               id: string
                         }
                         Insert: {
                               created_at?: string
                               user_name?: string | null
                               handle?: string | null
+                              role?: string | null
+                              avatar_url?: string | null
+                              followers?: number | null
+                              auth_user_id: string
                               id: string
                         }
+
                         Update: {
                               created_at?: string
                               user_name?: string | null
                               handle?: string | null
+                              role?: string | null
+                              avatar_url?: string | null
+                              followers?: number | null
+                              auth_user_id: string
                               id?: string
                         }
                         Relationships: []
