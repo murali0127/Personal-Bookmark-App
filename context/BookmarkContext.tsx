@@ -27,11 +27,13 @@ export interface UIBookmark {
 
 interface BookmarksContextType {
       bookmarks: UIBookmark[];
+      publicBookmarks: UIBookmark[];
       isLoading: boolean;
       addBookmark: (bm: Omit<UIBookmark, "id" | "createdAt">) => Promise<void>;
       updateBookmark: (id: string, patch: Partial<UIBookmark>) => Promise<void>;
       deleteBookmark: (id: string) => Promise<void>;
       refresh: () => Promise<void>;
+      fetchPublic: () => Promise<void>;
 }
 
 const BookmarksContext = createContext<BookmarksContextType | undefined>(
@@ -39,20 +41,18 @@ const BookmarksContext = createContext<BookmarksContextType | undefined>(
 );
 
 const COVER_FALLBACK = [
-      "https://unsplash.com/photos/a-stack-of-books-sitting-on-top-of-each-other-16HDTsj-t7w",
-      "https://unsplash.com/photos/a-pile-of-colorful-books-sitting-on-top-of-a-table-lHc7M-ujTcE",
-      "https://unsplash.com/photos/a-group-of-books-flying-through-the-air-ssznFiZluOU",
-      "https://unsplash.com/photos/education-dream-and-learning-concept-imagination-of-flying-books-in-sky-surreal-artwork-conceptual-painting-illustration-jBunBHVnuiA",
-      "https://unsplash.com/photos/a-book-with-two-light-bulbs-attached-to-it-iVoCugvjKV8",
-      "https://unsplash.com/photos/a-pile-of-colorful-books-sitting-on-top-of-a-table-lHc7M-ujTcE",
-      "https://unsplash.com/photos/closeup-of-antique-books-educational-academic-and-literary-concept-br6n5z7Pxz0",
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1000&auto=format&fit=crop",
 ]
 
 const randomImage = (
-      COVER_FALLBACK: string[]
+      images: string[]
 ): string => {
-      const randomIndex = Math.floor(Math.random() * COVER_FALLBACK.length);
-      return COVER_FALLBACK[randomIndex];
+      const randomIndex = Math.floor(Math.random() * images.length);
+      return images[randomIndex];
 }
 
 function toUI(row: any): UIBookmark {
@@ -73,10 +73,25 @@ function toUI(row: any): UIBookmark {
 
 export function BookmarksProvider({ children }: { children: ReactNode }) {
       const supabase = createClient();
-      const { user } = useAuth();
+      const { user, profile } = useAuth();
+
 
       const [bookmarks, setBookmarks] = useState<UIBookmark[]>([]);
+      const [publicBookmarks, setPublicBookmarks] = useState<UIBookmark[]>([]);
       const [isLoading, setIsLoading] = useState(false);
+
+      const fetchPublic = useCallback(async () => {
+            setIsLoading(true);
+            const { data, error } = await supabase
+                  .from("bookmarks")
+                  .select("*")
+                  .eq("visibility", "public")
+                  .order("created_at", { ascending: false })
+                  .limit(12);
+
+            if (!error) setPublicBookmarks((data ?? []).map(toUI));
+            setIsLoading(false);
+      }, [supabase]);
 
       const refresh = useCallback(async () => {
             if (!user) return;
@@ -92,12 +107,14 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
       }, [user, supabase]);
 
       useEffect(() => {
+
             if (user) {
                   refresh();
             } else {
                   setBookmarks([]);
             }
-      }, [user?.id]); // only re-run when user id changes
+            fetchPublic();
+      }, [user?.id, fetchPublic, refresh]);
 
       const addBookmark = async (bm: Omit<UIBookmark, "id" | "createdAt">) => {
             if (!user) return;
@@ -108,7 +125,11 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
                   .single();
 
             if (!error && data) {
-                  setBookmarks((prev) => [toUI(data), ...prev]);
+                  const newBm = toUI(data);
+                  setBookmarks((prev) => [newBm, ...prev]);
+                  if (newBm.visibility === 'public') {
+                        setPublicBookmarks((prev) => [newBm, ...prev.slice(0, 11)]);
+                  }
             }
       };
 
@@ -122,6 +143,10 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
                   setBookmarks((prev) =>
                         prev.map((b) => (b.id === id ? { ...b, ...patch } : b))
                   );
+                  // Also update public bookmarks if it exists there
+                  setPublicBookmarks((prev) =>
+                        prev.map((b) => (b.id === id ? { ...b, ...patch } : b))
+                  );
             }
       };
 
@@ -133,12 +158,13 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
 
             if (!error) {
                   setBookmarks((prev) => prev.filter((b) => b.id !== id));
+                  setPublicBookmarks((prev) => prev.filter((b) => b.id !== id));
             }
       };
 
       return (
             <BookmarksContext.Provider
-                  value={{ bookmarks, isLoading, addBookmark, updateBookmark, deleteBookmark, refresh }}
+                  value={{ bookmarks, publicBookmarks, isLoading, addBookmark, updateBookmark, deleteBookmark, refresh, fetchPublic }}
             >
                   {children}
             </BookmarksContext.Provider>
