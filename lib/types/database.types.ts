@@ -25,6 +25,9 @@ export type Database = {
                               title?: string | null
                               url: string
                               visibility?: string
+                              description: string
+                              category: string
+                              author_name: string
                         }
                         Update: {
                               created_at?: string
@@ -33,6 +36,7 @@ export type Database = {
                               title?: string | null
                               url?: string
                               visibility?: string
+                              description: string
                         }
                         Relationships: [
                               {
