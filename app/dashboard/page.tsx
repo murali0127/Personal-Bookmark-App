@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import { Sparkles, Plus, Search, BookMarked } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Sparkles, Plus, Search, BookMarked, LucideTrash2, SquareArrowOutUpRight } from "lucide-react";
 import Header from "@/components/NavBar";
-
-/* -------------------------------------------------------------------------- */
-/*                                    Types                                   */
-/* -------------------------------------------------------------------------- */
+import { useBookmarks } from "@/context/BookmarkContext";
+import AddBookmarkModal from "@/components/AddBookmarkModal";
+import { CATEGORIES } from "@/data";
+import { toast } from "sonner";
 
 interface Bookmark {
     id: string;
@@ -15,71 +15,9 @@ interface Bookmark {
     url?: string;
     author?: string;
     category: string;
-    isPrivate?: boolean;
+    visibility?: string;
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                 Mock Data                                  */
-/* -------------------------------------------------------------------------- */
-
-const CATEGORIES = [
-    "All",
-    "Technology",
-    "Design",
-    "AI",
-    "Business",
-    "Development",
-];
-
-const MOCK_BOOKMARKS: Bookmark[] = [
-    {
-        id: "1",
-        title: "OpenAI Docs",
-        description: "Official OpenAI developer documentation.",
-        url: "https://platform.openai.com",
-        author: "OpenAI",
-        category: "AI",
-        isPrivate: false,
-    },
-    {
-        id: "2",
-        title: "Next.js Guide",
-        description: "Production-ready React framework.",
-        url: "https://nextjs.org",
-        author: "Vercel",
-        category: "Development",
-        isPrivate: true,
-    },
-    {
-        id: "3",
-        title: "Figma Design System",
-        description: "Modern UI design resources.",
-        url: "https://figma.com",
-        author: "Figma",
-        category: "Design",
-        isPrivate: false,
-    },
-    {
-        id: "4",
-        title: "TechCrunch",
-        description: "Latest startup and technology news.",
-        url: "https://techcrunch.com",
-        category: "Technology",
-        isPrivate: true,
-    },
-    {
-        id: "5",
-        title: "Y Combinator",
-        description: "Startup resources and founder guides.",
-        url: "https://ycombinator.com",
-        category: "Business",
-        isPrivate: false,
-    },
-];
-
-/* -------------------------------------------------------------------------- */
-/*                             Mock Bookmark Card                             */
-/* -------------------------------------------------------------------------- */
 
 function BookmarkCard({
     bookmark,
@@ -88,6 +26,12 @@ function BookmarkCard({
     bookmark: Bookmark;
     accentColor: string;
 }) {
+    const { deleteBookmark } = useBookmarks();
+    const handleDelete = async () => {
+        await deleteBookmark(bookmark.id);
+    }
+
+
     return (
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 space-y-3">
             <div className="flex items-center justify-between">
@@ -101,9 +45,15 @@ function BookmarkCard({
                     {bookmark.category}
                 </span>
 
-                {bookmark.isPrivate && (
-                    <span className="text-xs text-amber-400">Private</span>
+                {bookmark?.visibility === 'private' && (
+                    <span className="text-xs rounded-2xl font-bold bg-amber-500 text-black px-1">Private</span>
                 )}
+                <span>
+                    <button
+                        onClick={() => handleDelete()}>
+                        <LucideTrash2 className="p-1 rounded-2xl bg-neutral-800 text-neutral-500 hover:text-white transition-all duration-100" />
+                    </button>
+                </span>
             </div>
 
             <h3 className="font-bold text-white">{bookmark.title}</h3>
@@ -115,9 +65,9 @@ function BookmarkCard({
                     href={bookmark.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm underline text-blue-400"
+                    className="flex gap-2 text-sm  text-blue-400 no-underline"
                 >
-                    Visit Resource
+                    <span> <SquareArrowOutUpRight size="18px" className="flex" /></span> Visit
                 </a>
             )}
         </div>
@@ -129,12 +79,14 @@ function BookmarkCard({
 /* -------------------------------------------------------------------------- */
 
 export default function DashboardView() {
+    const { bookmarks } = useBookmarks();
+
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [isAddModel, setIsAddModel] = useState(false);
 
     const accentColor = "#007AFF";
 
-    const bookmarks = MOCK_BOOKMARKS;
 
     const filteredUserBookmarks = useMemo(() => {
         return bookmarks.filter((bm) => {
@@ -156,14 +108,14 @@ export default function DashboardView() {
 
     const totalCurations = bookmarks.length;
     const privateCurations = bookmarks.filter(
-        (bm) => bm.isPrivate
+        (bm) => bm.visibility === 'private'
     ).length;
     const publicCurations = bookmarks.filter(
-        (bm) => !bm.isPrivate
+        (bm) => bm.visibility === 'public'
     ).length;
 
     const handleCreate = () => {
-        alert("Create Curation");
+        setIsAddModel(!isAddModel)
     };
 
     return (
@@ -297,6 +249,16 @@ export default function DashboardView() {
                     </button>
                 </div>
             )}
+
+            {
+                isAddModel &&
+                <AddBookmarkModal
+                    isOpen={isAddModel}
+                    onClose={() => setIsAddModel(false)}
+                    // onAdd={())}
+                    accentColor={accentColor}
+                />
+            }
         </div>
     );
 }
