@@ -339,7 +339,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
        * @param authUser - The User object already in hand (avoids a redundant getUser() call)
        */
       const fetchProfile = useCallback(
-            async (userId: string, authUser: User | null) => {
+            async (userId: string, authUser: User | null
+                  // , email: string
+            ) => {
                   // Guard against concurrent calls (e.g. rapid auth state changes)
                   if (isFetchingProfile.current) return;
                   isFetchingProfile.current = true;
@@ -358,12 +360,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         }
 
                         // 🔧 Profile row missing — auto-create it
-                        if (error.code === "PGRST116") {
+                        if (error?.code === "PGRST116") {
                               const userName = extractDisplayName(authUser);
 
                               const { data: created, error: createError } = await supabase
                                     .from("profiles")
-                                    .insert([{ auth_user_id: userId, user_name: userName }])
+                                    .insert([{ id: userId, auth_user_id: userId, user_name: userName }])
                                     .select()
                                     .single();
 
@@ -374,6 +376,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                                     return;
                               }
 
+                              console.log('Profile: ', profile);
                               setProfile(created as Profile);
 
                               return;
@@ -510,7 +513,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             const { data: updated, error } = await supabase
                   .from("profiles")
-                  .upsert({ id: user.id, ...updates })
+                  .update(updates)
+                  .eq("auth_user_id", user.id)
                   .select()
                   .single();
 
