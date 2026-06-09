@@ -365,7 +365,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
                               const { data: created, error: createError } = await supabase
                                     .from("profiles")
-                                    .insert([{ id: userId, auth_user_id: userId, user_name: userName }])
+                                    .insert([{ auth_user_id: userId, user_name: userName }])
                                     .select()
                                     .single();
 
@@ -473,7 +473,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (userId) {
                   const { error: upsertError } = await supabase
                         .from("profiles")
-                        .upsert({ auth_user_id: userId, user_name: user_name ?? email.split('@')[0] });
+                        .upsert({ 
+                              id: userId, 
+                              auth_user_id: userId, 
+                              user_name: user_name ?? email.split('@')[0] 
+                        });
 
                   if (upsertError) {
                         // Non-fatal — fetchProfile will auto-create it on first load.
