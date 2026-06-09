@@ -28,13 +28,22 @@ export async function updateSession(request: NextRequest) {
       //Get Auth data from Supabase.
       const { data: { user } } = await supabase.auth.getUser()
 
-      // Protect dashboard routes
-      const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard') ||
+      // Protect routes
+      const isProtectedRoute = 
+            request.nextUrl.pathname.startsWith('/home') ||
+            request.nextUrl.pathname.startsWith('/dashboard') ||
+            request.nextUrl.pathname.startsWith('/profile') ||
             request.nextUrl.pathname.startsWith('/settings')
 
       if (!user && isProtectedRoute) {
             const url = request.nextUrl.clone()
-            url.pathname = '/login'
+            url.pathname = '/'
+            return NextResponse.redirect(url)
+      }
+
+      if (user && request.nextUrl.pathname === '/') {
+            const url = request.nextUrl.clone()
+            url.pathname = '/home'
             return NextResponse.redirect(url)
       }
 

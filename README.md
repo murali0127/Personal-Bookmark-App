@@ -8,7 +8,7 @@ A simple app to save and manage your personal bookmark URLs — public or privat
 - Sign in to manage your own collection
 
 ## Getting Started
-
+[page.tsx](app/page.tsx)
 ```bash
 npm install
 npm run dev

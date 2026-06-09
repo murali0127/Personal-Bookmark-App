@@ -9,7 +9,7 @@ import { useAuth } from '@/context/AuthContext'
 const navigation = [
       {
             name: 'Home',
-            href: '/',
+            href: '/home',
       },
       {
             name: 'Dashboard',
@@ -28,14 +28,14 @@ export default function Header() {
 
       if (pathname === '/') {
             return (
-                  <header className="w-full py-6 fixed top-0 left-0 z-50">
+                  <header className="w-full py-4 md:py-6 fixed top-0 left-0 z-50">
                         <div className="flex justify-center">
                               <div className="rounded-full border border-zinc-200/40 bg-black/10 p-1 shadow-2xl">
-                                    <div className='navbar flex items-center gap-3 px-6 py-2'>
+                                    <div className='navbar flex items-center gap-3 px-4 md:px-6 py-2'>
                                           <div className='p-1.5 rounded-lg bg-zinc-800/50 border border-white/5'>
                                                 <FolderBookmark className='w-4 h-4 text-blue-500' />
                                           </div>
-                                          <div className='text-xs text-white font-bold uppercase tracking-widest'>
+                                          <div className='text-[10px] md:text-xs text-white font-bold uppercase tracking-widest'>
                                                 BOOKMARK VAULT
                                           </div>
                                     </div>
@@ -51,12 +51,12 @@ export default function Header() {
       )
 
       return (
-            <header className="w-full py-6 fixed top-0 left-0 z-50">
-                  <div className="flex justify-center">
-                        <div className="rounded-full border border-zinc-200/40 bg-black/10 p-1 shadow-2xl">
+            <header className="w-full py-4 md:py-6 fixed top-0 left-0 z-50">
+                  <div className="flex justify-center px-4">
+                        <div className="rounded-full border border-zinc-200/40 bg-black/10 p-1 shadow-2xl max-w-full overflow-x-auto hide-scrollbar">
                               {user?.aud === 'authenticated' ? (
                                     <TabGroup selectedIndex={activeIndex >= 0 ? activeIndex : 0}>
-                                          <TabList className="flex gap-1">
+                                          <TabList className="flex gap-0.5 md:gap-1">
                                                 {navigation.map((item) => (
                                                       <Tab
                                                             key={item.name}
@@ -64,10 +64,11 @@ export default function Header() {
                                                             href={item.href}
                                                             className={({ selected }) =>
                                                                   `
-                    rounded-full px-5 py-2
-                    text-xs font-bold uppercase tracking-wider
+                    rounded-full px-3 md:px-5 py-1.5 md:py-2
+                    text-[10px] md:text-xs font-bold uppercase tracking-wider
                     transition-all duration-200
                     outline-none
+                    whitespace-nowrap
 
                     ${selected
                                                                         ? 'bg-white text-black shadow-md'
@@ -82,11 +83,11 @@ export default function Header() {
                                           </TabList>
                                     </TabGroup>
                               ) : (
-                                    <div className='navbar flex items-center gap-3 px-6 py-2'>
+                                    <div className='navbar flex items-center gap-3 px-4 md:px-6 py-2'>
                                           <div className='p-1.5 rounded-lg bg-zinc-800/50 border border-white/5'>
                                                 <FolderBookmark className='w-4 h-4 text-blue-500' />
                                           </div>
-                                          <div className='text-xs text-white font-bold uppercase tracking-widest'>
+                                          <div className='text-[10px] md:text-xs text-white font-bold uppercase tracking-widest'>
                                                 BOOKMARK VAULT
                                           </div>
                                     </div>

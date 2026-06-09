@@ -36,7 +36,7 @@ export default function RootLayout({
             <AuthProvider>
               <BookmarksProvider>
                 <Header />
-                <main className="flex-1 pt-28">
+                <main className="flex-1 pt-20 md:pt-28">
                   {children}
                 </main>
               </BookmarksProvider>

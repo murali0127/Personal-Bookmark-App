@@ -15,6 +15,7 @@ export interface Bookmark {
       coverImage?: string;
       avatarText?: string;
       isSaved?: boolean;
+      visibility: string
 }
 
 export type ActiveScreen = 'landing' | 'feed' | 'library' | 'profile';

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Search, FolderSync } from 'lucide-react';
+import { Search, FolderSync, Plug } from 'lucide-react';
 
 interface FeaturesBentoProps {
   accentColor: string;
@@ -22,7 +22,7 @@ export default function FeaturesBento({ accentColor }: FeaturesBentoProps) {
       description: 'AI-powered tags that automatically categorize your bookmarks.'
     },
     {
-      // icon: <Chrome className="w-5 h-5 text-black font-semibold" />,
+      icon: <Plug className="w-5 h-5 text-black font-semibold" />,
       title: 'Extensions',
       description: 'Save content from Chrome, Safari, and Firefox with one single click.'
     }
@@ -39,12 +39,15 @@ export default function FeaturesBento({ accentColor }: FeaturesBentoProps) {
           <div
             className="w-12 h-12 rounded-full flex items-center justify-center transition-all group-hover:scale-105 duration-350"
             style={{
-              backgroundColor: `${accentColor}1A`,
+              backgroundColor: `${accentColor}`,
               border: `1.5px solid ${accentColor}40`,
               color: accentColor
             }}
           >
-            {card?.icon && card.icon}
+            {card?.icon ?
+              card.icon
+              : <i className="bi bi-browser-chrome"></i>
+            }
           </div>
           <h3 className="font-sans font-bold text-lg text-white">
             {card.title}

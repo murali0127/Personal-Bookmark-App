@@ -32,15 +32,13 @@ export default function HeroSection({ onAuthSuccess, accentColor }: HeroSectionP
 
     try {
       if (isRegisterMode) {
+        // Adapt signUp payload to match SignUpCredentials shape (no 'options' property)
         await signUp({
           email,
           password,
-          options: {
-            data: {
-              name: userName?.trim() || null,
-            },
-          },
+          user_name: userName?.trim() || email.split(/[.@]/)[0]
         });
+        onAuthSuccess();
       } else {
         await signIn({ email, password });
         onAuthSuccess();
@@ -53,11 +51,7 @@ export default function HeroSection({ onAuthSuccess, accentColor }: HeroSectionP
     }
   };
 
-  useEffect(() => {
-    console.log(userName);
-    console.log(email);
-    console.log(password)
-  })
+
 
 
 
