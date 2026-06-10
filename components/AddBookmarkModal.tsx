@@ -12,6 +12,7 @@ import { CATEGORIES } from '@/data';
 import { motion, AnimatePresence } from 'motion/react';
 import { useBookmarks } from '@/context/BookmarkContext';
 import { Switch } from '@headlessui/react';
+import { useAuth } from '@/context/AuthContext';
 
 interface AddBookmarkModalProps {
   isOpen: boolean;
@@ -37,6 +38,7 @@ export default function AddBookmarkModal({
   onClose,
   accentColor
 }: AddBookmarkModalProps) {
+  const { user, profile } = useAuth();
   const { addBookmark } = useBookmarks();
 
   const [title, setTitle] = useState('');
@@ -63,6 +65,7 @@ export default function AddBookmarkModal({
     setIsSubmitting(true);
     try {
       await addBookmark({
+        user_id: profile?.id || '',
         title: title.trim(),
         description: description.trim() || 'No description supplied.',
         category,

@@ -20,6 +20,7 @@ import { useAuth } from "./AuthContext";
 
 export interface UIBookmark {
       id: string;
+      user_id: string;
       title: string;
       url: string;
       description: string;
@@ -62,6 +63,7 @@ function normalizeUrl(raw: string): string {
 function toUI(row: any): UIBookmark {
       return {
             id: row.id,
+            user_id: row.user_id,
             title: row.title ?? "Untitled",
             url: row.url,
             description: row.description ?? "",
@@ -173,7 +175,7 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
                   .insert([
                         {
                               // ✅ FIX 1: Use auth_user_id from Supabase auth (not profile.id)
-                              auth_user_id: user.id,
+                              user_id: profile?.id,
                               title: bm.title,
                               url: normalizedUrl,
                               category: bm.category || "General",

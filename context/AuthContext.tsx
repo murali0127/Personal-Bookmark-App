@@ -218,27 +218,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   email,
                   password,
                   options: {
-                        data: { name: user_name ?? null },
+                        data: { name: user_name ?? email.split('@')[0] },
                   },
             });
 
             if (error) throw error;
 
-            // Eagerly create the profiles row so it exists before the first fetchProfile call.
-            const userId = data?.user?.id;
-            if (userId) {
-                  const { error: upsertError } = await supabase
-                        .from("profiles")
-                        .upsert({
-                              id: userId,
-                              auth_user_id: userId,
-                              user_name: user_name ?? email.split('@')[0]
-                        });
-
-                  if (upsertError) {
-                        // Non-fatal — fetchProfile will auto-create it on first load.
-                        console.error("[AuthContext] Profile upsert after signUp failed:", upsertError);
-                  }
+            const { data: userData } = await supabase
+                  .from('profiles')
+                  .select('*')
+                  .eq('email', email)
+                  .single()
+            if (data) {
+                  toast.success('Account exists please Login to continue.')
+                  return;
             }
 
             toast.success("Account created! Check your email to confirm.");

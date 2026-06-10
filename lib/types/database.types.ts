@@ -13,6 +13,7 @@ export type Database = {
                         Row: {
                               created_at: string
                               id: string
+                              user_name: string
                               user_id: string
                               title: string | null
                               url: string
@@ -25,7 +26,7 @@ export type Database = {
                         Insert: {
                               created_at?: string
                               id?: string
-                              auth_user_id: string
+                              user_id: string
                               title?: string | null
                               url: string
                               visibility?: string
@@ -36,7 +37,7 @@ export type Database = {
                         Update: {
                               created_at?: string
                               id?: string
-                              owner_id?: string
+                              user_id?: string
                               title?: string | null
                               url?: string
                               visibility?: string
@@ -62,6 +63,8 @@ export type Database = {
                               followers: number | null
                               auth_user_id: string
                               id: string
+                              bio?: string
+                              email?: string
                         }
                         Insert: {
                               created_at?: string
@@ -83,6 +86,14 @@ export type Database = {
                               followers?: number | null
                               auth_user_id: string
                               id?: string
+                        }
+                        Upsert: {
+                              id?: string
+                              mail?: string
+                              user_name: string
+                              creted_at: string
+                              handle?: string
+                              role?: string
                         }
                         Relationships: []
                   }

@@ -115,16 +115,18 @@ export default function BookmarkCard({
 
         {/* Footer Meta */}
         <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
-            <span className="text-white/30 text-[9px] font-bold uppercase tracking-[0.15em]">
-              Curated by {user_name}
-            </span>
-          </div>
+          {author_name !== '' &&
+            < div className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
+              <span className="text-white/30 text-[9px] font-bold uppercase tracking-[0.15em]">
+                Curated by {author_name}
+              </span>
+            </div>
+          }
           <ArrowUpRight className="w-4 h-4 text-white/20 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
         </div>
 
       </div>
-    </article>
+    </article >
   );
 }
