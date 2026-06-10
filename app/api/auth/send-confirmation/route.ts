@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
             const confirmLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/callback?token=${token}&type=signup`;
 
             const result = await resend.emails.send({
-                  from: 'noreply@yourdomain.com', // Update this
+                  from: 'onboarding@resend.dev', // Update this
                   to: email,
                   subject: 'Confirm your email',
                   html: `
