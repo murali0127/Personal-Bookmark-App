@@ -1,0 +1,1 @@
+check the AuthContext and BookMarkContext to get the data from my Supabase DB. And also help me get my profiles data in the Authcontext, as far as now it is beeing null.
