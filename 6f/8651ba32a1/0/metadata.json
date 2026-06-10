@@ -1,0 +1,38 @@
+{
+  "cli_version": "0.7.6-nightly.202606070732.ab2c6169",
+  "checkpoint_id": "6f8651ba32a1",
+  "session_id": "1e68912c-c00d-4970-a457-11e3bdda67a3",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T06:07:17.0874106Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [
+    "lib/db/profile.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "nemotron-3-super:cloud",
+  "turn_id": "972d5d0aea88",
+  "token_usage": {
+    "input_tokens": 2311646,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 7873,
+    "api_call_count": 57
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T06:07:17.0480357Z",
+    "agent_lines": 0,
+    "agent_removed": 2,
+    "human_added": 64,
+    "human_modified": 50,
+    "human_removed": 0,
+    "total_committed": 114,
+    "total_lines_changed": 401,
+    "agent_percentage": 0.4987531172069825,
+    "metric_version": 2
+  }
+}
