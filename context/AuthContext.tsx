@@ -1,248 +1,4 @@
-// "use client";
 
-// import {
-//       createContext,
-//       useContext,
-//       useState,
-//       useEffect,
-//       useCallback,
-//       type ReactNode,
-// } from "react";
-// import { createClient } from "@/lib/supabase/client";
-// import { toast } from "sonner";
-// import type { User, Session, SignInWithPasswordCredentials, SignUpWithPasswordCredentials } from "@supabase/supabase-js";
-// import type { Profile } from "@/lib/types/index";
-
-
-// interface AuthContextType {
-//       user: User | null;
-//       profile: Profile | null;
-//       session: Session | null;
-//       isLoading: boolean;
-//       isLoggedIn: boolean;
-//       signIn: (credentials: SignInWithPasswordCredentials) => Promise<void>;
-//       signUp: (credentials: { email: string; password: string; userName?: string; user_name?: string }) => Promise<void>;
-//       updateProfile: (profileUpdates: { user_name?: string | null; role?: string | null; avatar_url?: string | null; followers?: number | null }) => Promise<Profile | null>;
-//       signOut: () => Promise<void>;
-//       refreshProfile: () => Promise<void>;
-// }
-
-// const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// // Provider
-// export function AuthProvider({ children }: { children: ReactNode }) {
-//       const supabase = createClient();
-
-//       const [user, setUser] = useState<User | null>(null);
-//       const [profile, setProfile] = useState<Profile | null>(null);
-//       const [session, setSession] = useState<Session | null>(null);
-//       const [isLoading, setIsLoading] = useState(true);
-
-//       const getUserNameFromMetadata = (user: User | null) => {
-//             const metadata = user?.user_metadata as Record<string, unknown> | undefined;
-//             const name =
-//                   typeof metadata?.name === "string" && metadata.name.trim()
-//                         ? metadata.name
-//                         : typeof metadata?.full_name === "string" && metadata.full_name.trim()
-//                               ? metadata.full_name
-//                               : typeof metadata?.first_name === "string" && metadata.first_name.trim()
-//                                     ? metadata.first_name
-//                                     : null;
-//             return name;
-//       };
-
-//       /* fetch profile based on user id*/
-//       const fetchProfile = useCallback(
-//             async (userId: string, currentUser?: User | null) => {
-//                   // Use passed-in user or fall back to current state — avoids redundant getUser() call
-//                   const resolvedUser = currentUser ?? user;
-//                   const userName = getUserNameFromMetadata(resolvedUser);
-
-//                   const { data, error } = await supabase
-//                         .from("profiles")
-//                         .select("*")
-//                         .eq("id", userId)
-//                         .single();
-
-//                   // Profile exists — set it and return
-//                   if (!error && data) {
-//                         setProfile(data as Profile);
-//                         return;
-//                   }
-
-//                   // Profile not found — create it
-//                   if (error?.code === "PGRST116") {
-//                         const { data: created, error: createError } = await supabase
-//                               .from("profiles")
-//                               .insert([{ id: userId, user_name: userName }])
-//                               .select()
-//                               .single();
-
-//                         if (createError) {
-//                               console.error("Profile creation error:", createError);
-//                               // toast.error("Failed to set up your profile. Please refresh.");
-//                               setProfile(null);
-//                               return;
-//                         }
-
-//                         setProfile(created as Profile);
-//                         return;
-//                   }
-
-//                   // Any other unexpected DB error
-//                   console.error("Profile fetch error:", error);
-//                   toast.error("Could not load your profile. Please try again.");
-//                   setProfile(null);
-//             },
-//             [supabase, user] // user added to deps since we use it as fallback
-//       );
-
-//       useEffect(() => {
-//             let mounted = true;
-
-//             const init = async () => {
-//                   const {
-//                         data: { session },
-//                   } = await supabase.auth.getSession();
-
-//                   if (!mounted) return;
-//                   setSession(session);
-//                   setUser(session?.user ?? null);
-
-//                   if (session?.user) await fetchProfile(session.user.id);
-//                   setIsLoading(false);
-//             };
-
-//             init();
-
-//             const {
-//                   data: { subscription },
-//             } = supabase.auth.onAuthStateChange(async (_event, session) => {
-//                   if (!mounted) return;
-//                   setSession(session);
-//                   setUser(session?.user ?? null);
-
-//                   if (session?.user) {
-//                         await fetchProfile(session.user.id);
-//                   } else {
-//                         setProfile(null);
-//                   }
-//             });
-
-//             return () => {
-//                   mounted = false;
-//                   subscription.unsubscribe();
-//             };
-//       }, [fetchProfile, supabase]);
-
-//       const signIn = async (credentials: SignInWithPasswordCredentials) => {
-//             const { error } = await supabase.auth.signInWithPassword(credentials);
-//             if (error) throw error;
-//             toast.success("Successfully signed in!");
-//       };
-
-//       const signUp = async (credentials: { email: string; password: string; userName?: string; user_name?: string }) => {
-//             const { email, password, userName, user_name } = credentials;
-//             const displayName = userName ?? user_name ?? null;
-
-//             // Include user metadata (name) so auth user has a display name
-//             const { data, error } = await supabase.auth.signUp({
-//                   email,
-//                   password,
-//                   user_name: displayName ?? undefined,
-//                   options: { data: { name: displayName } },
-//             } as any);
-
-//             if (error) throw error;
-
-//             // If a user record is returned, ensure a profiles row exists with the user_name
-//             const createdUserId = data?.user?.id;
-//             if (createdUserId) {
-//                   const { error: upsertError } = await supabase
-//                         .from('profiles')
-//                         .upsert({ id: createdUserId, user_name: displayName });
-
-//                   if (upsertError) {
-//                         console.error('Failed to create profile row after signUp', upsertError);
-//                   }
-//             }
-
-//             toast.success("Registration successful! Check your email.");
-//       };
-
-
-//       const signOut = async () => {
-//             await supabase.auth.signOut();
-//             toast.success("Signed out successfully");
-//       };
-
-//       const refreshProfile = async () => {
-//             if (user) await fetchProfile(user.id);
-//       };
-
-//       const updateProfile = async (profileUpdates: { user_name?: string | null; role?: string | null; avatar_url?: string | null; followers?: number | null }) => {
-//             if (!user) throw new Error('Not authenticated');
-//             const userId = user.id;
-
-//             // Update auth user metadata if display name changed
-//             try {
-//                   if (profileUpdates.user_name !== undefined) {
-//                         await supabase.auth.updateUser({ data: { name: profileUpdates.user_name } } as any);
-//                   }
-//             } catch (e) {
-//                   // non-fatal: log and continue to update profiles table
-//                   console.error('Failed to update auth user metadata', e);
-//             }
-
-//             // Upsert into profiles table to cascade changes
-//             const { data: updated, error } = await supabase
-//                   .from('profiles')
-//                   .upsert({ id: userId, ...profileUpdates })
-//                   .select()
-//                   .single();
-
-//             if (error) {
-//                   console.error('Failed to update profiles row', error);
-//                   throw error;
-//             }
-
-//             const withName = {
-//                   ...updated,
-//                   name: updated.user_name ?? getUserNameFromMetadata(user) ?? (user.email ? String(user.email).split('@')[0] : null),
-//             } as Profile;
-
-//             setProfile(withName);
-//             return withName;
-//       };
-//       console.log('User details: ', user);
-//       console.log('Profile details: ', profile)
-
-//       const value = {
-//             user,
-//             profile,
-//             session,
-//             isLoading,
-//             isLoggedIn: !!session,
-//             signIn,
-//             signUp,
-//             signOut,
-//             refreshProfile,
-//             updateProfile
-//       }
-//       return (
-//             <AuthContext.Provider
-//                   value={value}
-//             >
-//                   {children}
-//             </AuthContext.Provider>
-//       );
-// }
-
-// export function useAuth() {
-//       const ctx = useContext(AuthContext);
-//       if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
-//       return ctx;
-// }
 
 
 "use client";
@@ -365,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
                               const { data: created, error: createError } = await supabase
                                     .from("profiles")
-                                    .insert([{ auth_user_id: userId, user_name: userName }])
+                                    .insert([{ id: userId, auth_user_id: userId, user_name: userName }])
                                     .select()
                                     .single();
 
@@ -473,10 +229,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (userId) {
                   const { error: upsertError } = await supabase
                         .from("profiles")
-                        .upsert({ 
-                              id: userId, 
-                              auth_user_id: userId, 
-                              user_name: user_name ?? email.split('@')[0] 
+                        .upsert({
+                              id: userId,
+                              auth_user_id: userId,
+                              user_name: user_name ?? email.split('@')[0]
                         });
 
                   if (upsertError) {
@@ -517,7 +273,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             const { data: updated, error } = await supabase
                   .from("profiles")
-                  .update(updates)
+                  .update(updates as any)
                   .eq("auth_user_id", user.id)
                   .select()
                   .single();

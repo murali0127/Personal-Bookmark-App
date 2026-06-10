@@ -57,19 +57,19 @@ export default function DetailModal({
         >
           {/* Cover image banner */}
           <div className="relative h-60 md:h-72 w-full shrink-0">
-            <img 
-              src={bookmark.coverImage} 
-              alt={bookmark.title} 
+            <img
+              src={bookmark.bookmark_image_url}
+              alt={bookmark.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-black/40 to-transparent"></div>
-            
+
             {/* Context Controls */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
               <span className="px-2.5 py-1 text-[10px] font-bold rounded-lg uppercase tracking-wider backdrop-blur-md border border-white/10 text-white bg-black/40">
                 {bookmark.category}
               </span>
-              <button 
+              <button
                 onClick={onClose}
                 className="w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md border border-white/10 transition-colors"
                 id="close-reader"
@@ -94,9 +94,9 @@ export default function DetailModal({
           <div className="p-6 md:p-8 overflow-y-auto flex-1 space-y-6">
             {/* Quick Action Tray */}
             <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-              <button 
+              <button
                 onClick={(e) => onSaveToggle(bookmark.id, e)}
-                style={{ 
+                style={{
                   backgroundColor: bookmark.isSaved ? `${accentColor}1A` : 'transparent',
                   borderColor: bookmark.isSaved ? accentColor : 'rgba(255, 255, 255, 0.08)',
                   color: bookmark.isSaved ? accentColor : '#c1c6d7'
@@ -116,7 +116,7 @@ export default function DetailModal({
                 )}
               </button>
 
-              <button 
+              <button
                 onClick={handleCopyLink}
                 className="border border-white/10 p-2.5 rounded-xl text-xs font-semibold text-secondary hover:text-white flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-white/5"
               >
@@ -124,7 +124,7 @@ export default function DetailModal({
                 <span>{copied ? 'Copied!' : 'Share'}</span>
               </button>
 
-              <button 
+              <button
                 onClick={() => window.open(`https://${bookmark.url}`, '_blank')}
                 className="border border-white/10 p-2.5 rounded-xl text-xs font-semibold text-secondary hover:text-white flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-white/5"
               >
@@ -137,10 +137,10 @@ export default function DetailModal({
             <div className="flex items-center justify-between text-xs font-medium text-on-surface-variant/60">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center font-bold text-white text-xs border border-white/5">
-                  {bookmark.author ? bookmark.author.charAt(0) : 'C'}
+                  {bookmark.author_name ? bookmark.author_name?.charAt(0) : 'C'}
                 </div>
                 <div>
-                  <div className="text-secondary font-semibold">{bookmark.author || 'Curator'}</div>
+                  <div className="text-secondary font-semibold">{bookmark.author_name || 'Curator'}</div>
                   <div className="text-[10px] opacity-60">Verified Domain Curator</div>
                 </div>
               </div>

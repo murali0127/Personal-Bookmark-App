@@ -9,10 +9,10 @@ export interface Bookmark {
       description: string;
       category: string;
       url: string;
-      author?: string;
+      author_name?: string;
       publishedAge?: string;
       isFeatured?: boolean;
-      coverImage?: string;
+      bookmark_image_url?: string;
       avatarText?: string;
       isSaved?: boolean;
       visibility: string

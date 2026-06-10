@@ -17,11 +17,15 @@ export type Database = {
                               title: string | null
                               url: string
                               visibility: string
+                              description: string
+                              category: string
+                              author_name: string
+                              bookmark_image_url: string | null
                         }
                         Insert: {
                               created_at?: string
                               id?: string
-                              user_id: string
+                              auth_user_id: string
                               title?: string | null
                               url: string
                               visibility?: string

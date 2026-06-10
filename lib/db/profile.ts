@@ -33,7 +33,7 @@ export async function getProfileByHandle(handle: string) {
       return data
 }
 
-export async function updateProfile(profile: { user_name?: string | null; handle?: string | null }) {
+export async function updateProfile(profile: { user_name?: string | ""; handle?: string | "" }) {
       const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser()
 
@@ -41,7 +41,7 @@ export async function updateProfile(profile: { user_name?: string | null; handle
 
       const { data, error } = await supabase
             .from('profiles')
-            .update(profile)
+            .update(profile as any)
             .eq('auth_user_id', user.id)
             .select()
             .single()

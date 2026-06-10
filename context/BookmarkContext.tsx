@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import {
@@ -22,12 +24,12 @@ export interface UIBookmark {
       url: string;
       description: string;
       category: string;
-      visibility: string;
-      coverImage: string;
-      author: string;
+      visibility: string | 'private';
+      bookmark_image_url: string | '';
       publishedAge: string;
       isSaved: boolean;
       createdAt: string;
+      author_name: string;
 }
 
 interface BookmarksContextType {
@@ -65,9 +67,9 @@ function toUI(row: any): UIBookmark {
             description: row.description ?? "",
             category: row.category ?? "General",
             visibility: row.visibility ?? "private",
-            coverImage:
+            bookmark_image_url:
                   row.cover_image ?? `${COVER_FALLBACK}${encodeURIComponent(row.title ?? "Bookmark")}`,
-            author: row.profiles?.user_name ?? "Curated Mind",
+            author_name: row.author_name ?? "Curated Mind",
             publishedAge: "Recently",
             isSaved: true,
             createdAt: row.created_at,
@@ -86,6 +88,10 @@ const BookmarksContext = createContext<BookmarksContextType | undefined>(undefin
 
 export function BookmarksProvider({ children }: { children: ReactNode }) {
       const supabase = createClient();
+
+      // ✅ FIX 1: Pull profile from AuthContext.
+      //    profile.id  = profiles table PK  (what bookmarks.user_id references)
+      //    user.id     = auth UUID           (NOT what bookmarks.user_id references)
       const { user, profile } = useAuth();
 
       const [bookmarks, setBookmarks] = useState<UIBookmark[]>([]);
@@ -98,7 +104,7 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
             setIsLoading(true);
             const { data, error } = await supabase
                   .from("bookmarks")
-                  .select("*, profiles(user_name)")
+                  .select("*")
                   .eq("visibility", "public")
                   .order("created_at", { ascending: false })
                   .limit(12);
@@ -114,12 +120,14 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
       // ─── refresh (owner's bookmarks) ─────────────
 
       const refresh = useCallback(async () => {
+            // ✅ FIX 1: Guard on profile.id — the actual FK used in bookmarks.user_id
             if (!profile?.id) return;
 
             setIsLoading(true);
             const { data, error } = await supabase
                   .from("bookmarks")
-                  .select("*, profiles(user_name)")
+                  .select("*")
+                  // ✅ FIX 1: profile.id ("f51ee34d-...") not user.id ("dc04e3fd-...")
                   .eq("user_id", profile.id)
                   .order("created_at", { ascending: false });
 
@@ -127,15 +135,19 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
                   console.error("[BookmarksContext] refresh error:", error);
                   toast.error("Failed to load bookmarks.");
             } else {
+                  // ✅ FIX 4: Use the updated value from `data`, not the stale `bookmarks` state
                   const updated = (data ?? []).map(toUI);
                   setBookmarks(updated);
             }
             setIsLoading(false);
-      }, [profile?.id, supabase]);
+      }, [profile?.id, supabase]); // ✅ FIX 3: depend on profile.id, not user.id
 
       // ─── useEffect ───────────────────────────────
 
       useEffect(() => {
+            // ✅ FIX 3: Trigger when profile.id is available (profile loads async after user).
+            //    If we depended on user?.id alone, profile would still be null on first run
+            //    and refresh() would silently no-op.
             if (profile?.id) {
                   refresh();
             } else {
@@ -147,28 +159,33 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
       // ─── addBookmark ─────────────────────────────
 
       const addBookmark = async (bm: Omit<UIBookmark, "id" | "createdAt">) => {
+            // ✅ FIX 1 + FIX 2: Guard on profile, use profile.id for insert
             if (!user || !profile?.id) {
                   toast.error("You must be signed in to add bookmarks.");
                   return;
             }
 
+            // ✅ FIX 5: Normalize URL to satisfy the DB check constraint `url ~ '^https?://'`
             const normalizedUrl = normalizeUrl(bm.url);
 
             const { data, error } = await supabase
                   .from("bookmarks")
                   .insert([
                         {
-                              user_id: profile.id,
+                              // ✅ FIX 1: Use auth_user_id from Supabase auth (not profile.id)
+                              auth_user_id: user.id,
                               title: bm.title,
                               url: normalizedUrl,
-                              category: bm.category,
-                              description: bm.description || null,
+                              category: bm.category || "General",
+                              description: bm.description || "",
+                              author_name: bm.author_name || "",
                               visibility: bm.visibility ?? "private",
                         },
                   ])
-                  .select("*, profiles(user_name)")
+                  .select()
                   .single();
 
+            // ✅ FIX 2: Surface errors instead of swallowing them
             if (error) {
                   console.error("[BookmarksContext] addBookmark error:", error);
                   toast.error(`Failed to add bookmark: ${error.message}`);
@@ -193,7 +210,7 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
                   .update({
                         title: patch.title,
                         visibility: patch.visibility,
-                        description: patch.description ?? null,
+                        description: patch.description ?? "",
                   })
                   .eq("id", id);
 
@@ -224,6 +241,8 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
             toast.success("Bookmark deleted.");
       };
 
+      // ─── Context value ────────────────────────────
+
       return (
             <BookmarksContext.Provider
                   value={{
@@ -241,6 +260,10 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
             </BookmarksContext.Provider>
       );
 }
+
+// ─────────────────────────────────────────────
+// Hook
+// ─────────────────────────────────────────────
 
 export function useBookmarks() {
       const ctx = useContext(BookmarksContext);

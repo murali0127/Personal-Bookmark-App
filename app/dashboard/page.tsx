@@ -13,7 +13,7 @@ interface Bookmark {
     title: string;
     description: string;
     url?: string;
-    author?: string;
+    author_name?: string;
     category: string;
     visibility?: string;
 }
@@ -98,9 +98,7 @@ export default function DashboardView() {
                 bm.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 bm.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 (bm.url &&
-                    bm.url.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (bm.author &&
-                    bm.author.toLowerCase().includes(searchTerm.toLowerCase()));
+                    bm.url.toLowerCase().includes(searchTerm.toLowerCase()));
 
             const matchesCategory =
                 selectedCategory === "All" ||

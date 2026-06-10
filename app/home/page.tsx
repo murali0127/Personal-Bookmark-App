@@ -24,9 +24,8 @@ export default function HomePage() {
                         bm.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         bm.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         (bm.url &&
-                              bm.url.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (bm.author_name &&
-                              bm.author_name.toLowerCase().includes(searchTerm.toLowerCase()));
+                              bm.url.toLowerCase().includes(searchTerm.toLowerCase()));
+
 
                   const matchesCategory =
                         selectedCategory === "All" ||

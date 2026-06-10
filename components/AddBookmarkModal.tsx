@@ -8,9 +8,9 @@
 import React, { useEffect, useState } from 'react';
 import { X, Sparkles, Send, Globe, Image as ImageIcon, Loader2, BookmarkPlusIcon, BookLock, BookPlus } from 'lucide-react';
 import { Bookmark } from '../types';
+import { CATEGORIES } from '@/data';
 import { motion, AnimatePresence } from 'motion/react';
 import { useBookmarks } from '@/context/BookmarkContext';
-import { CATEGORIES } from '@/data';
 import { Switch } from '@headlessui/react';
 
 interface AddBookmarkModalProps {
@@ -91,10 +91,7 @@ export default function AddBookmarkModal({
     }
   };
 
-  useEffect(() => {
-    console.log(category);
-    console.log(selectedImage)
-  })
+
 
 
   return (
