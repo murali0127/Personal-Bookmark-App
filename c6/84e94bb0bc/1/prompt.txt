@@ -1,0 +1,88 @@
+check for the sending email in my SignUp function, i have configured supabase with SMTP server smtp.resend.com.
+
+---
+
+Fix Failed to fetch profile error in my application's app context
+
+---
+
+code
+: 
+"23503"
+details
+: 
+"Key is not present in table \"users\"."
+hint
+: 
+null
+message
+: 
+"insert or update on table \"profiles\" violates foreign key constraint \"profiles_auth_user_id_fkey\""Failed to load resource: the server responded with a status of 409 ()
+
+---
+
+{code: '42501', details: null, hint: null, message: 'new row violates row-level security policy for table "bookmarks"'}code: "42501"details: nullhint: nullmessage: "new row violates row-level security policy for table \"bookmarks\""[[Prototype]]: Object
+overrideMethod @ installHook.js:1
+error @ intercept-console-error.ts:48
+(anonymous) @ BookmarkContext.tsx:190
+await in (anonymous)
+(anonymous) @ AddBookmarkModal.tsx:65
+executeDispatch @ react-dom-client.development.js:20610
+runWithFiberInDEV @ react-dom-client.development.js:986
+processDispatchQueue @ react-dom-client.development.js:20660
+(anonymous) @ react-dom-client.development.js:21234
+batchedUpdates$1 @ react-dom-client.development.js:3377
+dispatchEventForPluginEventSystem @ react-dom-client.development.js:20814
+dispatchEvent @ react-dom-client.development.js:25817
+dispatchDiscreteEvent @ react-dom-client.development.js:25785, here what the error  shows when i try to add a bookmark ? what is the potential fix here ?
+
+---
+
+check my AddBookmark.tsx Component and BookmarkContext.tsx and database.types.ts to find the issue and try to fix it correclty.
+
+---
+
+How can i  fix the error at AddBookmarkModal.tsx, which expects user_id  ?
+
+---
+
+browser] [AuthContext] Profile creation failed: {
+  code: '23503',
+  details: 'Key is not present in table "users".',
+  hint: null,
+  message: 'insert or update on table "profiles" violates foreign key constraint "profiles_auth_user_id_fkey"'
+} 
+    at AuthProvider.useCallback[fetchProfile] (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/_0ejd6dv._.js:319:33)
+    at async AuthProvider.useEffect [as callback] (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/_0ejd6dv._.js:368:25)
+    at async (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/node_modules_%40supabase_auth-js_dist_module_1vqrmkg._.js:7365:17)
+    at async SupabaseAuthClient._useSession (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/node_modules_%40supabase_auth-js_dist_module_1vqrmkg._.js:6145:20)
+    at async SupabaseAuthClient._emitInitialSession (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/node_modules_%40supabase_auth-js_dist_module_1vqrmkg._.js:7360:16)
+    at async (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/node_modules_%40supabase_auth-js_dist_module_1vqrmkg._.js:7350:17) (file://C:/Users/MURALIDHARAN S/Desktop/personal-bookmark-app/.next/dev/static/chunks/_0ejd6dv._.js:319:33)
+, suggest the best fix for this error, check my codbase completely.
+
+---
+
+The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.2s
+✓ Finished TypeScript in 7.1s    
+  Collecting page data using 7 workers  ...Error: Missing API key. Pass it to the constructor `new Resend("re_123")`
+    at instantiateModule (C:\Users\MURALIDHARAN S\Desktop\personal-bookmark-app\.next\server\chunks\[turbopack]_runtime.js:853:9)
+    at instantiateRuntimeModule (C:\Users\MURALIDHARAN S\Desktop\personal-bookmark-app\.next\server\chunks\[turbopack]_runtime.js:882:12)
+    at getOrInstantiateRuntimeModule (C:\Users\MURALIDHARAN S\Desktop\personal-bookmark-app\.next\server\chunks\[turbopack]_runtime.js:895:12)
+    at Object.m (C:\Users\MURALIDHARAN S\Desktop\personal-bookmark-app\.next\server\chunks\[turbopack]_runtime.js:898:18)
+    at Object.<anonymous> (C:\Users\MURALIDHARAN S\Desktop\personal-bookmark-app\.next\server\app\api\auth\send-confirmation\route.js:6:3)
+
+> Build error occurred
+Error: Failed to collect page data for /api/auth/send-confirmation
+    at ignore-listed frames {
+  type: 'Error'
+}, what i need to do to fix this error, explain ?
+
+---
+
+is that i need to prvide my vercel deployment link as the url on the NEXT_PUBLIC_APP_URL
+
+---
+
+inMy Auth context, help me fix the Message that popup after SignUp, current application sends only Account exists toast instead of Confirm mail toast  ?
