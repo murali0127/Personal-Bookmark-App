@@ -68,7 +68,7 @@ export default function AddBookmarkModal({
         user_id: profile?.id || '',
         title: title.trim(),
         description: description.trim() || 'No description supplied.',
-        category,
+        category: category === 'All' ? 'General' : category,
         url: url.trim().toLowerCase(),
         bookmark_image_url: selectedImage,
         author_name: authorName.trim() || '',

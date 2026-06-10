@@ -229,12 +229,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                   .select('*')
                   .eq('email', email)
                   .single()
-            if (data) {
-                  toast.success('Account exists please Login to continue.')
+            // Existing user case: Supabase returns user with no identities and no session.
+            // (When "Confirm email" is on, a fresh signup also has no session — but identities is non-empty.)
+            const isExistingUser =
+                  !!data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0;
+
+            if (isExistingUser) {
+                  toast.info('An account with that email already exists. Please sign in.');
                   return;
             }
 
-            toast.success("Account created! Check your email to confirm.");
+            // New account — Supabase will send a confirmation email through smtp.resend.com.
+            if (data.user) {
+                  toast.success('Check your email to confirm your account.');
+                  return;
+            }
+
+            // Defensive: no user returned and no error. Shouldn't happen.
+            toast.error('Sign up failed. Please try again.');
       };
 
       const signOut = async () => {
