@@ -1,0 +1,151 @@
+{
+  "cli_version": "0.7.6-nightly.202606070732.ab2c6169",
+  "checkpoint_id": "45bf623e6b41",
+  "session_id": "a9f567d4-58a0-4226-b174-4048db2d317a",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T09:31:24.0488442Z",
+  "branch": "main",
+  "checkpoints_count": 8,
+  "save_step_count": 8,
+  "files_touched": [
+    "components/AddBookmarkModal.tsx",
+    "components/BookmarkCard.tsx",
+    "components/FloatingBackground.tsx",
+    "components/HeroSection.tsx",
+    "context/AuthContext.tsx",
+    "context/BookmarkContext.tsx",
+    "lib/types/database.types.ts",
+    "package-lock.json",
+    "package.json"
+  ],
+  "agent": "Claude Code",
+  "model": "minimax-m3:cloud",
+  "turn_id": "e2c55e38dc39",
+  "token_usage": {
+    "input_tokens": 738179,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 10628,
+    "api_call_count": 20
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T09:31:24.0202126Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 1223,
+    "human_removed": 683,
+    "total_committed": 0,
+    "total_lines_changed": 1906,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 812,
+      "user_lines_removed": 665,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "app/api/auth/send-confirmation/route.ts": 43,
+        "components/BookmarkCard.tsx": 9,
+        "components/FloatingBackground.tsx": 134,
+        "components/HeroSection.tsx": 17,
+        "context/AuthContext.tsx": 347,
+        "lib/types/database.types.ts": 211,
+        "package-lock.json": 50,
+        "package.json": 1
+      },
+      "user_removed_per_file": {
+        "components/BookmarkCard.tsx": 7,
+        "components/FloatingBackground.tsx": 125,
+        "components/HeroSection.tsx": 2,
+        "context/AuthContext.tsx": 331,
+        "lib/types/database.types.ts": 200
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 1,
+      "user_lines_removed": 24,
+      "agent_lines_added": 812,
+      "agent_lines_removed": 665,
+      "user_added_per_file": {
+        "context/AuthContext.tsx": 1
+      },
+      "user_removed_per_file": {
+        "context/AuthContext.tsx": 24
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 789,
+      "agent_lines_removed": 665
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 271,
+      "user_lines_removed": 271,
+      "agent_lines_added": 789,
+      "agent_lines_removed": 665,
+      "user_added_per_file": {
+        "context/BookmarkContext.tsx": 271
+      },
+      "user_removed_per_file": {
+        "context/BookmarkContext.tsx": 271
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 3,
+      "user_lines_removed": 1,
+      "agent_lines_added": 1060,
+      "agent_lines_removed": 936,
+      "user_added_per_file": {
+        "context/BookmarkContext.tsx": 2,
+        "lib/types/database.types.ts": 1
+      },
+      "user_removed_per_file": {
+        "lib/types/database.types.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 3,
+      "user_lines_removed": 3,
+      "agent_lines_added": 1062,
+      "agent_lines_removed": 936,
+      "user_added_per_file": {
+        "context/BookmarkContext.tsx": 2,
+        "lib/types/database.types.ts": 1
+      },
+      "user_removed_per_file": {
+        "context/BookmarkContext.tsx": 2,
+        "lib/types/database.types.ts": 1
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 3,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1062,
+      "agent_lines_removed": 936,
+      "user_added_per_file": {
+        "components/AddBookmarkModal.tsx": 3
+      }
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1065,
+      "agent_lines_removed": 936
+    }
+  ]
+}
