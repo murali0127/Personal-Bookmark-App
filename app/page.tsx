@@ -40,23 +40,8 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="bg-[#000000] text-[#e4e2e4] flex flex-col relative min-h-screen selection:bg-white/10 selection:text-white">
+    <div className="text-[#e4e2e4] flex flex-col relative min-h-screen selection:bg-white/10 selection:text-white bg-transparent">
 
-      {/* ── Ambient glow ── */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed top-[-250px] left-[-250px] w-[600px] h-[600px] rounded-full"
-        style={{
-          backgroundImage: `radial-gradient(circle, ${accentColor}1C 0%, rgba(0,0,0,0) 70%)`,
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-[-200px] right-[-200px] w-[500px] h-[500px] rounded-full"
-        style={{
-          backgroundImage: `radial-gradient(circle, ${accentColor}12 0%, rgba(0,0,0,0) 70%)`,
-        }}
-      />
       <FloatingBackground accentColor={accentColor} />
 
       <main className="flex-1 w-full pt-24 pb-20 px-4 md:px-10 max-w-6xl mx-auto flex flex-col gap-24 relative z-10">
@@ -84,7 +69,7 @@ export default function LandingPage() {
         </section>
 
       </main>
-      <footer className="w-full shrink-0 border-t border-white/5 bg-[#09090B] py-8">
+      <footer className="w-full z-10 shrink-0 border-t border-white/5 bg-transparent py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2.5">
             <BookMarked className="w-4 h-4 opacity-50" style={{ color: accentColor }} />

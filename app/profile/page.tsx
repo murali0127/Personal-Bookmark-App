@@ -11,9 +11,7 @@ export default function ProfilePage() {
     const { user, profile, signOut, updateProfile } = useAuth();
     const { bookmarks } = useBookmarks();
 
-    useEffect(() => {
-        console.log('User specific Bookmarks : ', bookmarks)
-    })
+  
 
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState("");

@@ -16,7 +16,7 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onAuthSuccess, accentColor }: HeroSectionProps) {
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
   const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
@@ -54,8 +54,18 @@ export default function HeroSection({ onAuthSuccess, accentColor }: HeroSectionP
     }
   };
 
-
-
+  const handleSocialLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      await signInWithGoogle();
+      // Don't call onAuthSuccess() — the redirect to /auth/callback handles that.
+    } catch (err: any) {
+      setError(err?.message || 'Google sign-in failed');
+      toast.error(err?.message || 'Google sign-in failed');
+      setIsLoading(false);  // only reset on error; on success the page is navigating away
+    }
+  };
 
 
   return (
@@ -233,7 +243,28 @@ export default function HeroSection({ onAuthSuccess, accentColor }: HeroSectionP
           </form>
 
 
+          {/*Gooogle OAuth */}
+          <div className="relative flex items-center justify-center my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/5"></div>
+            </div>
+            <span className="relative bg-[#1C1C1E] px-3 text-[10px] text-white/30 uppercase tracking-widest font-bold">
+              OR CONTINUE WITH
+            </span>
+          </div>
 
+          <div className="flex gap-3 pb-1">
+            <button
+              onClick={() => handleSocialLogin()}
+              className="w-full h-11 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 flex items-center justify-center gap-2.5 text-xs text-white active:scale-95 transition-all"
+            >
+              {/*    /!* Google path icon *!/*/}
+              <svg className="w-4.5 h-4.5" viewBox="0 0 24 24">
+                <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" fill="currentColor"></path>
+              </svg>
+              <span>Google</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

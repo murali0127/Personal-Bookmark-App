@@ -12,7 +12,7 @@
 
 @layer base {
       body {
-            background-color: #000000;
+            /* background-color: #000000; */
             color: #e4e2e4;
             overflow-x: hidden;
             scroll-behavior: smooth;
@@ -65,8 +65,4 @@
 
 .ios-active-scale:active {
       transform: scale(0.96);
-}
-
-div::-webkit-scrollbar {
-      display: none;
 }
