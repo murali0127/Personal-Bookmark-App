@@ -1,0 +1,112 @@
+{
+  "cli_version": "0.7.6-nightly.202606070732.ab2c6169",
+  "checkpoint_id": "7219228f46c7",
+  "session_id": "c82b378b-df5b-4e3f-8738-fb7501e17683",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-08T11:27:17.6986248Z",
+  "branch": "feature/oauth",
+  "checkpoints_count": 5,
+  "save_step_count": 5,
+  "files_touched": [
+    ".gitignore",
+    "app/api/auth/callback/route.ts",
+    "app/api/bookmark/routes.ts",
+    "app/auth/callback/route.ts",
+    "app/page.tsx",
+    "app/profile/page.tsx",
+    "components/FloatingBackground.tsx",
+    "components/HeroSection.tsx",
+    "context/AuthContext.tsx",
+    "index.css",
+    "lib/supabase/middleware.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "minimax-m3:cloud",
+  "turn_id": "3853fd02e90a",
+  "token_usage": {
+    "input_tokens": 2070121,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 20981,
+    "api_call_count": 37
+  },
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-08T11:27:17.6544201Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 853,
+    "human_removed": 761,
+    "total_committed": 55,
+    "total_lines_changed": 1614,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 901,
+      "user_lines_removed": 763,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "app/api/auth/auth-error/page.tsx": 39,
+        "app/api/auth/callback/route.ts": 67,
+        "app/api/auth/signout/route.ts": 31,
+        "app/page.tsx": 3,
+        "app/profile/page.tsx": 176,
+        "components/FloatingBackground.tsx": 134,
+        "components/HeroSection.tsx": 34,
+        "context/AuthContext.tsx": 350,
+        "index.css": 67
+      },
+      "user_removed_per_file": {
+        "app/api/bookmark/routes.ts": 18,
+        "app/auth/callback/route.ts": 20,
+        "app/page.tsx": 3,
+        "app/profile/page.tsx": 178,
+        "components/FloatingBackground.tsx": 134,
+        "components/HeroSection.tsx": 3,
+        "context/AuthContext.tsx": 336,
+        "index.css": 71
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 3,
+      "user_lines_removed": 1,
+      "agent_lines_added": 901,
+      "agent_lines_removed": 763,
+      "user_added_per_file": {
+        ".gitignore": 3
+      },
+      "user_removed_per_file": {
+        ".gitignore": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 903,
+      "agent_lines_removed": 778
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 927,
+      "agent_lines_removed": 778
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 927,
+      "agent_lines_removed": 778
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.7.6-nightly.202606070732.ab2c6169",
+  "checkpoint_id": "7219228f46c7",
+  "strategy": "manual-commit",
+  "branch": "feature/oauth",
+  "checkpoints_count": 5,
+  "files_touched": [
+    ".gitignore",
+    "app/api/auth/callback/route.ts",
+    "app/api/bookmark/routes.ts",
+    "app/auth/callback/route.ts",
+    "app/page.tsx",
+    "app/profile/page.tsx",
+    "components/FloatingBackground.tsx",
+    "components/HeroSection.tsx",
+    "context/AuthContext.tsx",
+    "index.css",
+    "lib/supabase/middleware.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/72/19228f46c7/0/metadata.json",
+      "transcript": "/72/19228f46c7/0/full.jsonl",
+      "content_hash": "/72/19228f46c7/0/content_hash.txt",
+      "prompt": "/72/19228f46c7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 2070121,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 0,
+    "output_tokens": 20981,
+    "api_call_count": 37
+  }
+}
