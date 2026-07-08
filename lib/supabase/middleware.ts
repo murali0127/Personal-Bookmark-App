@@ -25,8 +25,16 @@ export async function updateSession(request: NextRequest) {
                   },
             }
       )
-      //Get Auth data from Supabase.
-      const { data: { user } } = await supabase.auth.getUser()
+      //Get Auth data from Supabase. Guard against network/auth-server errors
+      // so a transient blip doesn't 500 the entire middleware on every request.
+      let user = null;
+      try {
+            const { data } = await supabase.auth.getUser();
+            user = data.user;
+      } catch (err) {
+            console.error('[supabase/middleware] getUser failed:', err);
+            user = null;
+      }
 
       // Protect routes
       const isProtectedRoute = 

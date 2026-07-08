@@ -33,6 +33,7 @@ interface AuthContextType {
       isLoggedIn: boolean;
       signIn: (credentials: SignInWithPasswordCredentials) => Promise<void>;
       signUp: (credentials: SignUpCredentials) => Promise<void>;
+      signInWithGoogle: () => Promise<void>;   // ← new;
       signOut: () => Promise<void>;
       updateProfile: (updates: ProfileUpdates) => Promise<Profile | null>;
       refreshProfile: () => Promise<void>;
@@ -50,6 +51,8 @@ interface ProfileUpdates {
       avatar_url?: string | null;
       followers?: number | null;
 }
+
+
 
 // ─────────────────────────────────────────────
 // Helpers
@@ -132,7 +135,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                                     return;
                               }
 
-                              console.log('Profile: ', profile);
                               setProfile(created as Profile);
 
                               return;
@@ -214,21 +216,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
 
       const signUp = async ({ email, password, user_name }: SignUpCredentials) => {
+            const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/callback`;
+
             const { data, error } = await supabase.auth.signUp({
                   email,
                   password,
                   options: {
                         data: { name: user_name ?? email.split('@')[0] },
+                        emailRedirectTo: redirectTo,
                   },
+                  // emailRedirectTo: redirectTo,
             });
 
             if (error) throw error;
 
-            const { data: userData } = await supabase
-                  .from('profiles')
-                  .select('*')
-                  .eq('email', email)
-                  .single()
+
             // Existing user case: Supabase returns user with no identities and no session.
             // (When "Confirm email" is on, a fresh signup also has no session — but identities is non-empty.)
             const isExistingUser =
@@ -301,6 +303,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setProfile(merged);
             return merged;
       };
+      //OAUTH
+      const signInWithGoogle = async () => {
+            // Mirror the signUp redirect so the value is in sync with NEXT_PUBLIC_APP_URL.
+            const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+            const { error } = await supabase.auth.signInWithOAuth({
+                  provider: 'google',
+                  options: {
+                        redirectTo: `${appUrl}/auth/callback`,
+                  },
+            });
+            if (error) throw error;
+      };
 
       // ─── refreshProfile ──────────────────────────
 
@@ -321,6 +335,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             signOut,
             updateProfile,
             refreshProfile,
+            signInWithGoogle
       };
 
       return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
