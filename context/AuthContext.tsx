@@ -13,6 +13,7 @@ import {
       type ReactNode,
 } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { buildAppUrl } from "@/lib/auth/redirect";
 import { toast } from "sonner";
 import type {
       User,
@@ -216,7 +217,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
 
       const signUp = async ({ email, password, user_name }: SignUpCredentials) => {
-            const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/callback`;
+            const redirectTo = buildAppUrl('/api/auth/callback');
 
             const { data, error } = await supabase.auth.signUp({
                   email,
@@ -305,12 +306,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       //OAUTH
       const signInWithGoogle = async () => {
-            // Mirror the signUp redirect so the value is in sync with NEXT_PUBLIC_APP_URL.
-            const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
             const { error } = await supabase.auth.signInWithOAuth({
                   provider: 'google',
                   options: {
-                        redirectTo: `${appUrl}/api/auth/callback`,
+                        redirectTo: buildAppUrl('/api/auth/callback'),
                   },
             });
             if (error) throw error;

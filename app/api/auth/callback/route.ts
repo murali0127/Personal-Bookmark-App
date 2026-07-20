@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
+import { buildAppUrl } from '@/lib/auth/redirect'
 import { NextResponse } from 'next/server'
 
-function errorRedirect(origin: string, reason: string) {
+function errorRedirect(reason: string) {
       return NextResponse.redirect(
-            `${origin}/auth/auth-error?reason=${encodeURIComponent(reason)}`
+            `${buildAppUrl('/api/auth/auth-error')}?reason=${encodeURIComponent(reason)}`
       )
 }
 
@@ -23,7 +24,7 @@ export async function GET(request: Request) {
             searchParams.get('error')
 
       if (errorParam) {
-            return errorRedirect(origin, errorParam)
+            return errorRedirect(errorParam)
       }
 
       if (code) {
@@ -32,8 +33,8 @@ export async function GET(request: Request) {
             if (!error) {
                   return NextResponse.redirect(`${origin}${next}`)
             }
-            return errorRedirect(origin, error.message)
+            return errorRedirect(error.message)
       }
 
-      return errorRedirect(origin, 'missing_code')
+      return errorRedirect('missing_code')
 }

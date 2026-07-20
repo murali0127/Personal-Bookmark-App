@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
+import { buildAppUrl } from '@/lib/auth/redirect';
 
 const resend = new Resend(process.env.NEXT_RESEND_API_KEY);
 
@@ -14,7 +15,7 @@ export async function POST(req: NextRequest) {
                   );
             }
 
-            const confirmLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/callback?token=${token}&type=signup`;
+            const confirmLink = `${buildAppUrl('/api/auth/callback')}?token=${token}&type=signup`;
 
             const result = await resend.emails.send({
                   from: 'onboarding@resend.dev', // Update this
