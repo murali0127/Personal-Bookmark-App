@@ -31,6 +31,9 @@ export interface UIBookmark {
       isSaved: boolean;
       createdAt: string;
       author_name: string;
+      author_email?: string | null;
+      ownerEmail?: string | null;
+      ownerBio?: string | null;
 }
 
 interface BookmarksContextType {
@@ -61,6 +64,10 @@ function normalizeUrl(raw: string): string {
 }
 
 function toUI(row: any): UIBookmark {
+      const profile = row.profiles ?? null;
+      const displayName = profile?.user_name || row.author_name || "Annanymous";
+      const authorEmail = profile?.email || null;
+
       return {
             id: row.id,
             user_id: row.user_id,
@@ -71,10 +78,13 @@ function toUI(row: any): UIBookmark {
             visibility: row.visibility ?? "private",
             bookmark_image_url:
                   row.cover_image ?? `${COVER_FALLBACK}${encodeURIComponent(row.title ?? "Bookmark")}`,
-            author_name: row.author_name ?? "Curated Mind",
+            author_name: displayName,
+            author_email: authorEmail,
             publishedAge: "Recently",
             isSaved: true,
             createdAt: row.created_at,
+            ownerEmail: profile?.email ?? null,
+            ownerBio: profile?.bio ?? null,
       };
 }
 
@@ -106,7 +116,14 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
             setIsLoading(true);
             const { data, error } = await supabase
                   .from("bookmarks")
-                  .select("*")
+                  .select(`*,
+                        profiles:user_id(
+                        id, 
+                        user_name,
+                        email,
+                        bio
+                        )
+                        `)  //populate user who created the bookmark
                   .eq("visibility", "public")
                   .order("created_at", { ascending: false })
                   .limit(12);

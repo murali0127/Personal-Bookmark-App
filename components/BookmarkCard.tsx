@@ -35,9 +35,12 @@ export default function BookmarkCard({
     category,
     bookmark_image_url,
     author_name,
+    author_email,
     publishedAge,
     isSaved
   } = bookmark;
+
+  const displayAuthorName = author_name || user_name || 'Anonymous';
 
   // Extract clean domain for display
   const domain = React.useMemo(() => {
@@ -48,6 +51,8 @@ export default function BookmarkCard({
       return url;
     }
   }, [url]);
+
+
 
   return (
     <article
@@ -115,14 +120,13 @@ export default function BookmarkCard({
 
         {/* Footer Meta */}
         <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between">
-          {author_name !== '' &&
-            < div className="flex items-center gap-2">
-              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />
-              <span className="text-white/30 text-[9px] font-bold uppercase tracking-[0.15em]">
-                Curated by {author_name}
+          {displayAuthorName && (
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: accentColor }} />              <span className="text-white/30 text-[9px] font-bold uppercase tracking-[0.15em]">
+                Curated by {displayAuthorName}
               </span>
             </div>
-          }
+          )}
           <ArrowUpRight className="w-4 h-4 text-white/20 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
         </div>
 
