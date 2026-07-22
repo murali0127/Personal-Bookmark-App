@@ -45,6 +45,10 @@ export default function HomePage() {
             alert('Confirm to Save?.')
       }
 
+      useEffect(() => {
+            console.log(`Populated Public Bookmarks : ${JSON.stringify(publicBookmarks[0])}`)
+      })
+
       return (
             <div className="w-full max-w-7xl mx-auto px-4 md:px-10">
                   <motion.div
