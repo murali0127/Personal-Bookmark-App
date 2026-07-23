@@ -15,7 +15,7 @@ export default function HomePage() {
 
       const [accentColor, setAccentColor] = useState('#007AFF')
       const [searchTerm, setSearchTerm] = useState('');
-      const [selectedCategory, setSelectedCategory] = useState<string>('General');
+      const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
       // Search and Category filtering logic
       const filteredUserBookmarks = useMemo(() => {
