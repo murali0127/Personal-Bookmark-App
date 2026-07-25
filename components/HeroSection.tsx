@@ -75,12 +75,12 @@ export default function HeroSection({ onAuthSuccess, accentColor }: HeroSectionP
 
 
         <h1 className="font-sans text-4xl md:text-5xl font-black text-white leading-tight tracking-tight">
-          Save what matters. <br />
-          <span style={{ color: accentColor }}>Organize effortlessly.</span>
+          Organize your bookmarks like a personal knowledge vault. <br />
+          <span style={{ color: accentColor }}>Save articles, ideas, and inspiration effortlessly.</span>
         </h1>
 
         <p className="text-secondary text-base leading-relaxed max-w-md">
-          Premium workspace for your digital library. Curate articles, research, and inspiration in a distraction-free environment designed for power users.
+          Bookmark Vault gives you a modern way to save links, organize research, and revisit your favorite content with a clean, distraction-free experience built for daily use.
         </p>
 
         {/* Security / trust metrics */}

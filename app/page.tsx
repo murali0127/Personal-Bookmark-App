@@ -14,6 +14,7 @@ import { BookMarked } from 'lucide-react';
 
 const DEFAULT_ACCENT = '#007AFF';
 const ACCENT_STORAGE_KEY = 'memex_accent_color';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://bookmarkvault.app';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -39,8 +40,33 @@ export default function LandingPage() {
     window.open(bookmark.url, '_blank', 'noopener,noreferrer');
   };
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Bookmark Vault',
+    url: SITE_URL,
+    description:
+      'A modern bookmark manager for saving, organizing, and revisiting useful links, articles, and inspiration.',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    featureList: [
+      'Save links and bookmarks',
+      'Organize articles and research',
+      'Create a personal knowledge library',
+    ],
+  };
+
   return (
     <div className="text-[#e4e2e4] flex flex-col relative min-h-screen selection:bg-white/10 selection:text-white bg-transparent">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
 
       <FloatingBackground accentColor={accentColor} />
 
@@ -51,7 +77,22 @@ export default function LandingPage() {
           accentColor={accentColor}
         />
 
-
+        <section
+          aria-labelledby="seo-benefits"
+          className="rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-8 md:px-8 md:py-10"
+        >
+          <div className="max-w-3xl space-y-3">
+            <p className="font-sans text-xs font-bold uppercase tracking-[0.28em]" style={{ color: accentColor }}>
+              Why Bookmark Vault
+            </p>
+            <h2 id="seo-benefits" className="text-white font-sans text-2xl md:text-3xl font-bold tracking-tight">
+              Turn scattered links into a clean, searchable personal library.
+            </h2>
+            <p className="text-base leading-relaxed text-[#c1c6d7]/75">
+              Bookmark Vault helps you save meaningful resources, organize research, and revisit your favorite articles without losing focus. It is designed for people who want a simple yet powerful bookmark manager for everyday browsing.
+            </p>
+          </div>
+        </section>
 
         <section aria-label="Upcoming features" className="space-y-4">
           <div className="text-center space-y-1.5 mb-8">

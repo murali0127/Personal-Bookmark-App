@@ -9,10 +9,42 @@ import { BookmarksProvider } from '@/context/BookmarkContext';
 import Header from '@/components/NavBar';
 
 export const metadata: Metadata = {
-  title: 'Bookmark Vault',
-  description: 'come get Organize your Bookmarks.',
+  title: {
+    default: 'Bookmark Vault | Organize your bookmarks beautifully',
+    template: '%s | Bookmark Vault',
+  },
+  description:
+    'Bookmark Vault helps you save, organize, and revisit articles, inspiration, and research in a polished personal workspace.',
+  keywords: [
+    'bookmark manager',
+    'save links',
+    'organize bookmarks',
+    'personal bookmark app',
+    'bookmark organizer',
+  ],
   icons: {
     icon: '/icon.svg',
+  },
+  openGraph: {
+    title: 'Bookmark Vault | Organize your bookmarks beautifully',
+    description:
+      'A modern bookmark manager for organizing articles, references, and inspiration in one beautiful workspace.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Bookmark Vault',
+    url: '/',
+    images: [{ url: '/icon.svg', width: 512, height: 512, alt: 'Bookmark Vault logo' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bookmark Vault | Organize your bookmarks beautifully',
+    description:
+      'A modern bookmark manager for organizing articles, references, and inspiration in one beautiful workspace.',
+    images: ['/icon.svg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
